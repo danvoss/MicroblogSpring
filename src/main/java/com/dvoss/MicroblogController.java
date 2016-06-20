@@ -35,6 +35,12 @@ public class MicroblogController {
         return "redirect:/";
     }
 
+    @RequestMapping(path = "/logout", method = RequestMethod.POST)
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
     @RequestMapping(path = "/add-message", method = RequestMethod.POST)
     public String add(String message, HttpSession session) throws Exception {
         String username = (String) session.getAttribute("username");
