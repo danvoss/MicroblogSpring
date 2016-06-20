@@ -20,6 +20,12 @@ public class MicroblogController {
     public String home(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
+        Integer msgId = 1;
+        for (Message msg : messages) {
+            msg.id = msgId;
+            msgId++;
+        }
+        model.addAttribute("messages", messages);
         return "home";
     }
 
@@ -30,27 +36,23 @@ public class MicroblogController {
     }
 
     @RequestMapping(path = "/add-message", method = RequestMethod.POST)
-    public String add(Message message, HttpSession session) throws Exception {
+    public String add(String message, HttpSession session) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username == null) {
             throw new Exception("Not logged in.");
         }
-        String newMsg = (String) session.getAttribute("message");
-        message = new Message(newMsg);
-        messages.add(message);
+        Message msg = new Message(message);
+        messages.add(msg);
         return "redirect:/";
     }
 
-    @RequestMapping(path = "/delete-message", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/delete-message", method = RequestMethod.POST)
     public String delete(Integer id, HttpSession session) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username == null) {
             throw new Exception("Not logged in.");
         }
-        id = (Integer) session.getAttribute("id");
         messages.remove(id - 1);
         return "redirect:/";
     }
-
-
 }

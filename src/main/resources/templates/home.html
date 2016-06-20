@@ -9,7 +9,7 @@
 {{/username}}
 
 {{#username}}
-<form action="/create-message" method="post"/>
+<form action="/add-message" method="post"/>
 <input type="text" name="message" placeholder="Enter your message."/>
 <button type="submit">Submit</button>
 </form>
@@ -18,7 +18,7 @@ Messages by {{username}}:
 <ol>
     {{#messages}}
     <li>
-        {{message}}
+        {{text}}
         <form action="/delete-message" method="post" style="display: inline-block;"/>
         <input type="hidden" name="id" value="{{id}}"/>
         <button type="submit">Delete</button>
