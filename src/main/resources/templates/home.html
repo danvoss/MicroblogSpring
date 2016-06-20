@@ -1,33 +1,33 @@
 <html>
 <body>
 
-{{^user}}
+{{^username}}
 <form action="/login" method="post">
     <input type="text" name="username" placeholder="Enter your name."/>
     <button type="submit">Login</button>
 </form>
-{{/user}}
+{{/username}}
 
-{{#user}}
+{{#username}}
 <form action="/create-message" method="post"/>
 <input type="text" name="message" placeholder="Enter your message."/>
 <button type="submit">Submit</button>
 </form>
 <br>
-Messages by {{name}}:
+Messages by {{username}}:
 <ol>
     {{#messages}}
     <li>
         {{message}}
         <form action="/delete-message" method="post" style="display: inline-block;"/>
-        <input type="hidden" name="msgDelete" value="{{msgDelete}}"/>
+        <input type="hidden" name="id" value="{{id}}"/>
         <button type="submit">Delete</button>
         </form>
     </li>
     {{/messages}}
 </ol>
 
-{{/user}}
+{{/username}}
 
 </body>
 </html>
