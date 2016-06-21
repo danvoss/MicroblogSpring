@@ -1,5 +1,6 @@
 package com.dvoss;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,18 +15,23 @@ import java.util.ArrayList;
 @Controller
 public class MicroblogController {
 
-    ArrayList<Message> messages = new ArrayList<>();
+    @Autowired
+    MessagesRepository messages;
+
+    //ArrayList<Message> messages = new ArrayList<>();
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
-        Integer msgId = 1;
-        for (Message msg : messages) {
-            msg.id = msgId;
-            msgId++;
-        }
-        model.addAttribute("messages", messages);
+        Iterable<Message> msgs = messages.findAll();
+        model.addAttribute("messages", msgs);
+//        Integer msgId = 1;
+//        for (Message msg : messages) {
+//            msg.id = msgId;
+//            msgId++;
+//        }
+//        model.addAttribute("messages", messages);
         return "home";
     }
 
@@ -48,7 +54,8 @@ public class MicroblogController {
             throw new Exception("Not logged in.");
         }
         Message msg = new Message(message);
-        messages.add(msg);
+        messages.save(msg);
+        //messages.add(msg);
         return "redirect:/";
     }
 
@@ -58,7 +65,8 @@ public class MicroblogController {
         if (username == null) {
             throw new Exception("Not logged in.");
         }
-        messages.remove(id - 1);
+        messages.delete(id);
+        //messages.remove(id - 1);
         return "redirect:/";
     }
 }
