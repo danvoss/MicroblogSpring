@@ -19,7 +19,7 @@ Messages by {{username}}:
     {{#messages}}
     <li>
         {{text}}
-        <form action="/delete-message" method="post" style="display: inline-block;"/>
+        <form action="/delete-message" method="post" style="display: inline-block;">
         <input type="hidden" name="id" value="{{id}}"/>
         <button type="submit">Delete</button>
         </form>
