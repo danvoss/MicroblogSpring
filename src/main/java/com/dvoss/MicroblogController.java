@@ -69,4 +69,16 @@ public class MicroblogController {
         //messages.remove(id - 1);
         return "redirect:/";
     }
+
+    @RequestMapping(path = "/edit-message", method = RequestMethod.POST)
+    public String edit(String message, Integer id, HttpSession session) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            throw new Exception("Not logged in.");
+        }
+        // wrong ids ??
+        Message m = new Message(id, message);
+        messages.save(m);
+        return "redirect:/";
+    }
 }

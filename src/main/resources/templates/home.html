@@ -15,17 +15,23 @@
 </form>
 <br>
 Messages by {{username}}:
-<ol>
+<ul>
     {{#messages}}
-    <li>
+<li>
         {{text}}
         <form action="/delete-message" method="post" style="display: inline-block;">
         <input type="hidden" name="id" value="{{id}}"/>
         <button type="submit">Delete</button>
+        </form><br>
+
+    <i>Edit message:</i> <form action="/edit-message" method="post" style="display: inline-block;">
+            <input type="text" name="message" value="{{text}}"/>
+            <input type="hidden" name="id" value="{{id}}"/>
+            <button type="submit">Submit Edited Message</button>
         </form>
-    </li>
+</li>
     {{/messages}}
-</ol>
+</ul>
 <br>
 <form action="/logout" method="post">
     <button type="submit">Logout</button>
