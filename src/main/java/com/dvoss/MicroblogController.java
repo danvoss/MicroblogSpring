@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Dan on 6/20/16.
@@ -18,20 +19,23 @@ public class MicroblogController {
     @Autowired
     MessagesRepository messages;
 
-    //ArrayList<Message> messages = new ArrayList<>();
-
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(Model model, HttpSession session) {
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
         Iterable<Message> msgs = messages.findAll();
-        model.addAttribute("messages", msgs);
-//        Integer msgId = 1;
-//        for (Message msg : messages) {
-//            msg.id = msgId;
-//            msgId++;
-//        }
-//        model.addAttribute("messages", messages);
+
+        //to retain original order (thanks, Porter!):
+        ArrayList<Message> msgList = new ArrayList<>();
+        for (Message msg : msgs) {
+            msgList.add(msg);
+        }
+        // & compareTo override in Message class
+        Collections.sort(msgList);
+
+        model.addAttribute("messages", msgList);
+
+        //model.addAttribute("messages", msgs);
         return "home";
     }
 
@@ -55,7 +59,6 @@ public class MicroblogController {
         }
         Message msg = new Message(message);
         messages.save(msg);
-        //messages.add(msg);
         return "redirect:/";
     }
 
@@ -66,7 +69,6 @@ public class MicroblogController {
             throw new Exception("Not logged in.");
         }
         messages.delete(id);
-        //messages.remove(id - 1);
         return "redirect:/";
     }
 
